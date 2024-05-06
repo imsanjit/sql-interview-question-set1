@@ -20,7 +20,25 @@ Data Science Job Salaries
     ![image](https://github.com/imsanjit/sql-interview-question-set1/assets/40655088/a40f2949-e60a-40cf-a054-1f3843955c74)
 
 
-3. AS a remote work advocate Working for a progressive HR tech startup who place their freshers’ clients IN large tech firms. you're tasked WITH Identifying top 5 Country Having greatest count of large (company size) number of companies.
+2. AS a remote work advocate Working for a progressive HR tech startup who place their freshers’ clients IN large tech firms. you're tasked WITH Identifying top 5 Country Having greatest count of large (company size) number of companies.
+   ```
+         SELECT 
+             company_locatiON, COUNT(company_size) AS 'cnt'
+         FROM
+             (SELECT 
+                 *
+             FROM
+                 salaries
+             WHERE
+                 experience_level = 'EN'
+                     AND company_size = 'L') AS t
+         GROUP BY company_locatiON
+         ORDER BY cnt DESC
+         LIMIT 5;
+   ```
+
+   ![image](https://github.com/imsanjit/sql-interview-question-set1/assets/40655088/988e68ca-3c19-421a-9ff2-643c4ae6b053)
+
 4. Picture yourself AS a data scientist Working for a workforce management platform. Your objective is to calculate the percentage of employees. Who enjoy fully remote roles WITH salaries Exceeding $100,000 USD, Shedding light ON the attractiveness of high-paying remote positions IN today's job market.
 5. Imagine you're a data analyst Working for a global recruitment agency. Your Task is to identify the Locations where entry-level average salaries exceed the average salary for that job title IN market for entry level, helping your agency guide candidates towards lucrative opportunities.
 6. You've been hired by a big HR Consultancy to look at how much people get paid IN different Countries. Your job is to Find out for each job title which. Country pays the maximum average salary. This helps you to place your candidates IN those countries.
