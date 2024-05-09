@@ -56,11 +56,39 @@ Data Science Job Salaries
 4. Imagine you're a data analyst Working for a global recruitment agency. Your Task is to identify the Locations where entry-level average salaries exceed the average salary for that job title IN market for entry level, helping your agency guide candidates towards lucrative opportunities.
 
 ```
+   SELECT 
+       l.job_title,
+       r.company_location,
+       avg_salary,
+       avg_per_contry_salary
+   FROM
+       (SELECT 
+           job_title, AVG(salary) AS 'avg_salary'
+       FROM
+           salaries
+       GROUP BY job_title) l
+           INNER JOIN
+       (SELECT 
+           company_location,
+               job_title,
+               AVG(salary) AS 'avg_per_contry_salary'
+       FROM
+           salaries
+       GROUP BY job_title , company_location) r ON l.job_title = r.job_title
+   WHERE
+       avg_per_contry_salary > avg_salary;
 
 ```
+   ![image](https://github.com/imsanjit/sql-interview-question-set1/assets/40655088/0814983d-fa49-4ced-bb7f-bcffa789b018)
 
 
-6. You've been hired by a big HR Consultancy to look at how much people get paid IN different Countries. Your job is to Find out for each job title which. Country pays the maximum average salary. This helps you to place your candidates IN those countries.
-7. AS a data-driven Business consultant, you've been hired by a multinational corporation to analyze salary trends across different company Locations. Your goal is to Pinpoint Locations WHERE the average salary Has consistently Increased over the Past few years (Countries WHERE data is available for 3 years Only(present year and past two years) providing Insights into Locations experiencing Sustained salary growth.
-8.  Picture yourself AS a workforce strategist employed by a global HR tech startup. Your Mission is to Determine the percentage of fully remote work for each experience level IN 2021 and compare it WITH the corresponding figures for 2024, Highlighting any significant Increases or decreases IN remote work Adoption over the years.
-9.  AS a Compensation specialist at a Fortune 500 company, you're tasked WITH analyzing salary trends over time. Your objective is to calculate the average salary increase percentage for each experience level and job title between the years 2023 and 2024, helping the company stay competitive IN the talent market.
+6. You've been hired by a big HR Consultancy to look at how much people get paid in different Countries. Your job is to Find out for each job title which. Country pays the maximum average salary. This helps you to place your candidates IN those countries.
+
+   ```
+
+   ```
+
+   
+8. AS a data-driven Business consultant, you've been hired by a multinational corporation to analyze salary trends across different company Locations. Your goal is to Pinpoint Locations WHERE the average salary Has consistently Increased over the Past few years (Countries WHERE data is available for 3 years Only(present year and past two years) providing Insights into Locations experiencing Sustained salary growth.
+9.  Picture yourself AS a workforce strategist employed by a global HR tech startup. Your Mission is to Determine the percentage of fully remote work for each experience level IN 2021 and compare it WITH the corresponding figures for 2024, Highlighting any significant Increases or decreases IN remote work Adoption over the years.
+10.  AS a Compensation specialist at a Fortune 500 company, you're tasked WITH analyzing salary trends over time. Your objective is to calculate the average salary increase percentage for each experience level and job title between the years 2023 and 2024, helping the company stay competitive IN the talent market.
