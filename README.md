@@ -82,7 +82,7 @@ Data Science Job Salaries
       ![image](https://github.com/imsanjit/sql-interview-question-set1/assets/40655088/0814983d-fa49-4ced-bb7f-bcffa789b018)
 
 
-6. You've been hired by a big HR Consultancy to look at how much people get paid in different Countries. Your job is to Find out for each job title which. Country pays the maximum average salary. This helps you to place your candidates IN those countries.
+5. You've been hired by a big HR Consultancy to look at how much people get paid in different Countries. Your job is to Find out for each job title which. Country pays the maximum average salary. This helps you to place your candidates IN those countries.
 
    ```
       select *, dense_rank() over (partition by job_title order by avg_country_salary desc) as 'rank_num' 
@@ -99,6 +99,29 @@ Data Science Job Salaries
       ![image](https://github.com/imsanjit/sql-interview-question-set1/assets/40655088/6a75dd0c-1248-4eef-b164-4b17dabac1d3)
 
    
-8. AS a data-driven Business consultant, you've been hired by a multinational corporation to analyze salary trends across different company Locations. Your goal is to Pinpoint Locations WHERE the average salary Has consistently Increased over the Past few years (Countries WHERE data is available for 3 years Only(present year and past two years) providing Insights into Locations experiencing Sustained salary growth.
-9.  Picture yourself AS a workforce strategist employed by a global HR tech startup. Your Mission is to Determine the percentage of fully remote work for each experience level IN 2021 and compare it WITH the corresponding figures for 2024, Highlighting any significant Increases or decreases IN remote work Adoption over the years.
-10.  AS a Compensation specialist at a Fortune 500 company, you're tasked WITH analyzing salary trends over time. Your objective is to calculate the average salary increase percentage for each experience level and job title between the years 2023 and 2024, helping the company stay competitive IN the talent market.
+6. AS a data-driven Business consultant, you've been hired by a multinational corporation to analyze salary trends across different company Locations. Your goal is to Pinpoint Locations WHERE the average salary Has consistently Increased over the Past few years (Countries WHERE data is available for 3 years Only(present year and past two years) providing Insights into Locations experiencing Sustained salary growth.
+
+   ```
+      with cta_data as (
+      	select * from salaries where company_location in
+      	(select company_location from (
+      	select company_location,  avg(salary) as 'avg_salary', count( distinct(work_year)) as 'cnt'
+      	from salaries 
+      	where work_year >= (year(current_date() )-2 ) 
+      	group by company_location
+      	having cnt = 3) t
+      	)
+          )
+      select company_location, 
+      max(case when work_year = 2022 then avg_salary end) avg_salary_2022,
+      max(case when work_year = 2023 then avg_salary end) avg_salary_2023,
+      max(case when work_year = 2024 then avg_salary end) avg_salary_2024
+      from
+      (
+      select company_location, work_year, avg(salary) as 'avg_salary' from cta_data group by company_location, work_year
+      )q group by company_location
+      having avg_salary_2024 > avg_salary_2023 and avg_salary_2023 > avg_salary_2022
+   ```
+      ![image](https://github.com/imsanjit/sql-interview-question-set1/assets/40655088/b90cd4bc-f01a-44ab-8aa2-ec9ad1fecd64)
+
+  
