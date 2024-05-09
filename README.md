@@ -53,40 +53,50 @@ Data Science Job Salaries
 
 
    
-4. Imagine you're a data analyst Working for a global recruitment agency. Your Task is to identify the Locations where entry-level average salaries exceed the average salary for that job title IN market for entry level, helping your agency guide candidates towards lucrative opportunities.
-
-```
-   SELECT 
-       l.job_title,
-       r.company_location,
-       avg_salary,
-       avg_per_contry_salary
-   FROM
-       (SELECT 
-           job_title, AVG(salary) AS 'avg_salary'
-       FROM
-           salaries
-       GROUP BY job_title) l
-           INNER JOIN
-       (SELECT 
-           company_location,
-               job_title,
-               AVG(salary) AS 'avg_per_contry_salary'
-       FROM
-           salaries
-       GROUP BY job_title , company_location) r ON l.job_title = r.job_title
-   WHERE
-       avg_per_contry_salary > avg_salary;
-
-```
-   ![image](https://github.com/imsanjit/sql-interview-question-set1/assets/40655088/0814983d-fa49-4ced-bb7f-bcffa789b018)
+4. Imagine you're a data analyst Working for a global recruitment agency. Your Task is to identify the Locations where average salaries exceed the average salary for that job title IN market for entry level, helping your agency guide candidates towards lucrative opportunities.
+   
+   ```
+      SELECT 
+          l.job_title,
+          r.company_location,
+          avg_salary,
+          avg_per_contry_salary
+      FROM
+          (SELECT 
+              job_title, AVG(salary) AS 'avg_salary'
+          FROM
+              salaries
+          GROUP BY job_title) l
+              INNER JOIN
+          (SELECT 
+              company_location,
+                  job_title,
+                  AVG(salary) AS 'avg_per_contry_salary'
+          FROM
+              salaries
+          GROUP BY job_title , company_location) r ON l.job_title = r.job_title
+      WHERE
+          avg_per_contry_salary > avg_salary;
+   
+   ```
+      ![image](https://github.com/imsanjit/sql-interview-question-set1/assets/40655088/0814983d-fa49-4ced-bb7f-bcffa789b018)
 
 
 6. You've been hired by a big HR Consultancy to look at how much people get paid in different Countries. Your job is to Find out for each job title which. Country pays the maximum average salary. This helps you to place your candidates IN those countries.
 
    ```
+      select *, dense_rank() over (partition by job_title order by avg_country_salary desc) as 'rank_num' 
+         from 
+         (
+         select company_location, job_title, avg(salary) as 'avg_country_salary' 
+         from 
+         salaries 
+         group by company_location, job_title
+         )t 
+         where rank_num = 1;
 
    ```
+      ![image](https://github.com/imsanjit/sql-interview-question-set1/assets/40655088/6a75dd0c-1248-4eef-b164-4b17dabac1d3)
 
    
 8. AS a data-driven Business consultant, you've been hired by a multinational corporation to analyze salary trends across different company Locations. Your goal is to Pinpoint Locations WHERE the average salary Has consistently Increased over the Past few years (Countries WHERE data is available for 3 years Only(present year and past two years) providing Insights into Locations experiencing Sustained salary growth.
